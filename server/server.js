@@ -15,26 +15,22 @@ let userCount = 0;
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log(('New user connected.'));
+  console.log('New user connected.');
 
-  socket.emit('newMessage', {
-    from: '@florenceS',
-    text: 'Hey there. Can we meet up at 6:00pm?',
-    createdAt: 456
+
+  socket.on('createMessage', (message) => { //Listener
+    console.log('createMessage', message);
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
-
-  socket.on('createMessage', (newMessage) => { //Listener
-    console.log('createMessage', newMessage);
-  });
-
 
   socket.on('disconnect', () => {
     console.log('User disconnected.');
   });
-
-
 });
-
 
 server.listen(port, () => {  //To add: if(!module.parent) {} This will resolve the Error: listen EADDRINUSE :::3000
   console.log(`Started up on port ${port}`);
