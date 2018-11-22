@@ -5,23 +5,37 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const {generateMessage, generateLocationMessage} = require('./utils/message');
+const {isRealString} = require('./utils/validation.js');
+const {Users} = require('./utils/users.js');
+
 const publicPath = path.join(__dirname, '..', 'public');
 const port = process.env.PORT || 3000;
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 let userCount = 0;
+let users = new Users();
 
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   console.log('New user connected.');
 
+  socket.on('join', (params,callback) => {
+    if (!isRealString(params.name) || !isRealString(params.room)) {
+      return callback('Name and room name are required.');
 
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat room!'));
+    }
+    socket.join(params.room);
+    users.removeUser(socket.id);
+    users.addUser(socket.id, params.name,params.room);
 
+    io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat room!'));
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
 
-  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User joined.'));
+    callback();
+  });
 
   socket.on('createMessage', (message, callback) => { //Listener
     console.log('createMessage', message);
@@ -33,7 +47,15 @@ io.on('connection', (socket) => {
     io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude,coords.longitude))
   });
   socket.on('disconnect', () => {
-    console.log('User disconnected.');
+    let disconnectUser = users.getUser(socket.id); //get user info before disconnecting.
+
+    if(disconnectUser) {
+      users.removeUser(socket.id);
+      io.to(disconnectUser[0].room).emit('updateUserList', users.getUserList(disconnectUser[0].room));
+      io.to(disconnectUser[0].room).emit('newMessage', generateMessage('Admin',  `${disconnectUser[0].name} has disconnected.`))
+      console.log('User disconnected.');
+    }
+
   });
 });
 
