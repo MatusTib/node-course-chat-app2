@@ -41,7 +41,6 @@ socket.on('updateUserList', function (users) {
     ol.append($('<li></li>').text(users));
   });
   $('#users').html(ol);
-  console.log('Users list:', users);
 });
 
 socket.on('newMessage', function (message) {
@@ -75,7 +74,6 @@ socket.on('newLocationMessage', function (message) {
     e.preventDefault();
     var messageTextbox = $('#inputmsg');
     socket.emit('createMessage', {
-      from: 'User',
       text: messageTextbox.val()
     }, function () {
         messageTextbox.val('')
