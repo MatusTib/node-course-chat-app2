@@ -26,6 +26,14 @@ io.on('connection', (socket) => {
       return callback('Name and room name are required.');
 
     }
+    params.room = params.room.toLowerCase();  //Make room name case insensitive
+    params.name = params.name.toLowerCase();
+
+    if (users.isDuplicate(params.name)) {
+
+      return callback('There is already a user by that name. Please try again.');
+    }
+
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name,params.room);
@@ -57,8 +65,13 @@ io.on('connection', (socket) => {
   });
   socket.on('disconnect', () => {
     let disconnectUser = users.getUser(socket.id); //get user info before disconnecting.
-
-    if(disconnectUser) {
+    // console.log('socket.id:', socket.id);
+    // console.log('disconnectUser:', disconnectUser);
+    // console.log('socket.id:', socket.id);
+    // let isEmpty = (disconnectUser.length === 0);
+    // console.log('is disconnectUser empty (length)?:',isEmpty);
+    if(disconnectUser.length > 0) {  //Make sure to disconnect an existing user only.
+      // console.log('socket.id:', socket.id);
       users.removeUser(socket.id);
       io.to(disconnectUser[0].room).emit('updateUserList', users.getUserList(disconnectUser[0].room));
       io.to(disconnectUser[0].room).emit('newMessage', generateMessage('Admin',  `${disconnectUser[0].name} has disconnected.`))

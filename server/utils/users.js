@@ -23,6 +23,11 @@ class Users {
     var namesArray = users.map((user) =>  user.name);
     return namesArray;
   }
+  isDuplicate (name) {
+    var usersList = this.users.find((user) => user.name === name);
+    // console.log('usersList', usersList);
+    return (usersList != undefined);
+  }
 
 }
 
