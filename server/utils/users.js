@@ -13,9 +13,6 @@ class Users {
 
   }
   getUser (id) {
-    // var foundUser = this.users.filter((user) => user.id === id);
-    // return foundUser;
-    // return this.users.filter((user) => user.id === id)[0];
     return this.users.filter((user) => user.id === id);
   }
   getUserList (room) {
@@ -25,7 +22,6 @@ class Users {
   }
   isDuplicate (name) {
     var usersList = this.users.find((user) => user.name === name);
-    // console.log('usersList', usersList);
     return (usersList != undefined);
   }
 
