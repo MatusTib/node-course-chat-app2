@@ -88,4 +88,14 @@ describe('Users', () => {
     var user = users.getUser('44');
     expect(user).toEqual([]);
   } );
+
+  it('should detect duplicate username', () => {
+    var dupUser = 'Florence';
+    var uniqUser = 'Oprah';
+
+    var result = users.isDuplicate(dupUser);
+    expect(result).toBeTruthy();
+    result = users.isDuplicate(uniqUser);
+    expect(result).toBeFalsy();
+  })
 });
