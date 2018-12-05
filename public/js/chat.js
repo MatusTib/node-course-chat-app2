@@ -29,9 +29,7 @@ socket.on('connect', function () {
 });
 
 socket.on('displayRoomName', function(room) {
-  $('#roomName').text('Room - '+ room); //#roomName
-  // console.log('Display Room:', room);  //------- TRACE
-
+  $('#roomName').text('Room - '+ room); 
 })
 socket.on('disconnect', function () {
   console.log('Disconnect from server.');

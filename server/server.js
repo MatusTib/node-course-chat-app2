@@ -22,32 +22,13 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected.');
 
-  socket.emit('displayRooms', rooms.getRoomList());
-  // console.log('socket.emit- List of rooms so far (2):', rooms.getRoomList()); //----TRACE
+  socket.emit('displayRooms', rooms.getRoomList());  //When user connects to the join chat page display available chat rooms
 
   socket.on('join', (params,callback) => {
-    // console.log('params.options',params.options);
-    // console.log('(1) params=',params);
-    //----TRACE
-    if (params.options) {   //Drop down list is displayed on front-end
-      // console.log('There are options!! Room name no longer required.');//----TRACE
-      // console.log('params=',params);//----TRACE
-      // console.log('The user choose:',params.options);
-      // console.log('room=', params.room);
-      // console.log('room length=', params.room.length);
-      if(params.room) {
-        console.log('User entered a room name!!!');
-      }
-    }//----TRACE
     if (!isRealString(params.name) || !isRealString(params.room) && params.options === undefined) {
       return callback('Name and room name are required.');
-
     }
-
     if (params.options && !params.room) {
-      console.log('There are options!! Room name no longer required.');//----TRACE
-      console.log('params=',params);//----TRACE
-      console.log('The user choose:',params.options);
 
       params.room = params.options;  //Make room name case insensitive
       params.name = params.name.toLowerCase();
@@ -64,8 +45,6 @@ io.on('connection', (socket) => {
       return callback('There is already a user by that name. Please try again.');
     }
 
-    // console.log('(2) room=', params.room);  //------TRACE
-    // socket.join(params.room);
     socket.join(params.room, () => {
         rooms.addRoom(params.room);
         socket.emit('displayRoomName',params.room); //Send room name to client to display in chat room
@@ -111,6 +90,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(port, () => {  //To add: if(!module.parent) {} This will resolve the Error: listen EADDRINUSE :::3000
+server.listen(port, () => {  
   console.log(`Started up on port ${port}`);
 });
