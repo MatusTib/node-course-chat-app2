@@ -15,10 +15,9 @@ function scrollToBottom () {
       messages.scrollTop(scrollHeight);
   }
 }
+
 socket.on('connect', function () {
   var params = $.deparam(window.location.search);
-
-
   socket.emit('join', params, function (err) {
     if(err) {
       alert(err);
@@ -27,17 +26,19 @@ socket.on('connect', function () {
       console.log('No error.');
     }
   })
-
 });
 
+socket.on('displayRoomName', function(room) {
+  $('#roomName').text('Room - '+ room); //#roomName
+  // console.log('Display Room:', room);  //------- TRACE
+
+})
 socket.on('disconnect', function () {
   console.log('Disconnect from server.');
 });
-
-socket.on('updateUserList', function (users) {
+socket.on('updateUserList', function (users, room) {
   var ol = $('<ol></ol>');
-
-  users.forEach(function (users) {
+users.forEach(function (users) {
     ol.append($('<li></li>').text(users));
   });
   $('#users').html(ol);

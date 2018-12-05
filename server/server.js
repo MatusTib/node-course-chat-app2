@@ -7,7 +7,7 @@ const socketIO = require('socket.io');
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation.js');
 const {Users} = require('./utils/users.js');
-
+const {Rooms} = require('./utils/rooms.js');
 const publicPath = path.join(__dirname, '..', 'public');
 const port = process.env.PORT || 3000;
 let app = express();
@@ -15,30 +15,66 @@ let server = http.createServer(app);
 let io = socketIO(server);
 let userCount = 0;
 let users = new Users();
+let rooms = new Rooms();
 
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   console.log('New user connected.');
 
+  socket.emit('displayRooms', rooms.getRoomList());
+  // console.log('socket.emit- List of rooms so far (2):', rooms.getRoomList()); //----TRACE
+
   socket.on('join', (params,callback) => {
-    if (!isRealString(params.name) || !isRealString(params.room)) {
+    // console.log('params.options',params.options);
+    // console.log('(1) params=',params);
+    //----TRACE
+    if (params.options) {   //Drop down list is displayed on front-end
+      // console.log('There are options!! Room name no longer required.');//----TRACE
+      // console.log('params=',params);//----TRACE
+      // console.log('The user choose:',params.options);
+      // console.log('room=', params.room);
+      // console.log('room length=', params.room.length);
+      if(params.room) {
+        console.log('User entered a room name!!!');
+      }
+    }//----TRACE
+    if (!isRealString(params.name) || !isRealString(params.room) && params.options === undefined) {
       return callback('Name and room name are required.');
 
     }
-    params.room = params.room.toLowerCase();  //Make room name case insensitive
-    params.name = params.name.toLowerCase();
 
-    if (users.isDuplicate(params.name)) {
+    if (params.options && !params.room) {
+      console.log('There are options!! Room name no longer required.');//----TRACE
+      console.log('params=',params);//----TRACE
+      console.log('The user choose:',params.options);
+
+      params.room = params.options;  //Make room name case insensitive
+      params.name = params.name.toLowerCase();
+
+    } else {
+        params.options = undefined;
+        params.room = params.room.toLowerCase();  //Make room name case insensitive
+        params.name = params.name.toLowerCase();
+
+    }
+
+    if (users.isDuplicate(params.name, params.room)) {
 
       return callback('There is already a user by that name. Please try again.');
     }
 
-    socket.join(params.room);
+    // console.log('(2) room=', params.room);  //------TRACE
+    // socket.join(params.room);
+    socket.join(params.room, () => {
+        rooms.addRoom(params.room);
+        socket.emit('displayRoomName',params.room); //Send room name to client to display in chat room
+    });
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name,params.room);
 
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+    io.to(params.room).emit('updateUserList', users.getUserList(params.room), params.room);
+
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat room!'));
     socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
 
