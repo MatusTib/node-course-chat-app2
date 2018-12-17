@@ -4,7 +4,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage, generateLocationMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage, generateImageMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation.js');
 const {Users} = require('./utils/users.js');
 const {Rooms} = require('./utils/rooms.js');
@@ -19,6 +19,9 @@ let rooms = new Rooms();
 
 app.use(express.static(publicPath));
 
+app.get('/upload', (req,res) => {
+
+} )
 io.on('connection', (socket) => {
   console.log('New user connected.');
 
@@ -35,7 +38,7 @@ io.on('connection', (socket) => {
 
     } else {
         params.options = undefined;
-        params.room = params.room.toLowerCase();  //Make room name case insensitive
+        params.room = params.room.toUpperCase();  //Make room name case insensitive
         params.name = params.name.toLowerCase();
 
     }
@@ -61,7 +64,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (message, callback) => { //Listener
-    var user  = users.getUser(socket.id);
+    let user  = users.getUser(socket.id);
 
     if(user && isRealString(message.text)) {
       io.to(user[0].room).emit('newMessage', generateMessage(user[0].name,message.text));
@@ -71,13 +74,26 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createLocationMessage', (coords) => {
-    var user  = users.getUser(socket.id);
+    let user  = users.getUser(socket.id);
 
     if(user) {
       io.to(user[0].room).emit('newLocationMessage', generateLocationMessage(user[0].name, coords.latitude,coords.longitude))
     }
 
   });
+
+  //createImageMessage
+  socket.on('createImageMessage', (message, callback) => { //Listener
+    let user  = users.getUser(socket.id);
+    console.log('message.img:', message.img);//---------TRACE
+    if(user) {
+      io.to(user[0].room).emit('newImageMessage', generateImageMessage(user[0].name, message.img));
+    }
+
+    callback();
+  });
+
+
   socket.on('disconnect', () => {
     let disconnectUser = users.getUser(socket.id); //get user info before disconnecting.
     if(disconnectUser.length > 0) {  //Make sure to disconnect an existing user only.
@@ -90,6 +106,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(port, () => {  
+server.listen(port, () => {
   console.log(`Started up on port ${port}`);
 });

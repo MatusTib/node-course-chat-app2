@@ -1,4 +1,4 @@
-var socket = io();
+let socket = io();
 
 socket.on('displayRooms', function (rooms) {
   let roomList = $('#roomList');

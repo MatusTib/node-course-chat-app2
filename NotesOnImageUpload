@@ -1,0 +1,6 @@
+Notes on File upload
+When the file is passed on to server through the socket it becomes a ArrayBuffer, a Typed Array.
+All other file information is stripped.  Therefore, it's important to save file information (name, type,size) in a variable before à
+passing it on to the server.
+
+To display an image it must be wrapped in a URL object.

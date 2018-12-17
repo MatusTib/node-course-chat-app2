@@ -2,14 +2,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="/css/ionicons.min.css">
     <title>Chat | Chat App</title>
   </head>
   <body class="chat">
 
     <div class="chat__sidebar">
-      <h3 id="roomName"></h3>
+      <h2 id="roomName"></h2>
       <h3>People</h3>
       <div id="users"></div>
     </div>
@@ -22,10 +23,14 @@
           <input id="inputmsg" type="text" placeholder="Type your message here..." autofocus autocomplete="off"/>
           <button>Send</button>
         </form>
-        <button id="send-location">Send location</button>
+        <button id="send-location"><i class="ion-ios-location icon-small"></i></button>
+        <input type="file" id="image-file" accept="image/*" style="display: none">
+        <button id="image-select"><i class="ion-images icon-small"></i></button>
       </div>
     </div>
+    <div class="" id="imageTest">
 
+    </div>
     <script id="message-template" type="text/template">
           <li class="message">
             <div class="message__title">
@@ -50,6 +55,19 @@
             </div>
           </li>
     </script>
+
+    <script id="image-message-template" type="x-tmpl-mustache">
+          <li class="message">
+            <div class="message__title">
+              <h4>{{from}}</h4>
+              <span>{{createdAt}}</span>
+            </div>
+            <div class="message__body">
+            <img src="{{img}}" height= "200" witdh="200"/>
+            </div>
+          </li>
+    </script>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/libs/jquery-3.3.1.min.js"></script>
     <script src="/js/libs/moment.js"></script>

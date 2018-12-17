@@ -16,4 +16,16 @@ var generateLocationMessage = (from,latitude,longitude) => {
   };
 };
 
-module.exports = {generateMessage,generateLocationMessage};
+//generateImageMessage
+var generateImageMessage = (from, img) => {
+  console.log('In generateImageMessage img:', img);//---------TRACE
+  // const buf = Buffer.from(img, 'binary');
+  // console.log('In generateImageMessage Buffer:', buf);//---------TRACE
+  return {
+    from,
+    img,
+    createdAt: moment().valueOf()
+  };
+};
+
+module.exports = {generateMessage, generateLocationMessage, generateImageMessage};
