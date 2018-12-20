@@ -35,7 +35,7 @@ h3 {
 button {
   background: #265f82;
   cursor: pointer;
-  transition: background .3s ease
+  transition: background .3s ease;
 }
 
 button:hover {
@@ -46,10 +46,40 @@ button:disabled {
   cursor: default;
   background: #698ea5
 }
+.btn-join button,
+input[type=submit] {
+  border-radius: 30px;
+}
+.btn-location {
+  font-size: 10px;
+  margin-right: 10px;
+}
+
+.message-form button,
+input[type=submit] {
+  border-radius: 50%;
+  font-size: 18px;
+  padding: 0;
+}
+
+.btn-location button,
+input[type=submit]  {
+  border-radius: 50%;
+  font-size: 18px;
+  padding: 0;
+}
+.btn-send-image button,
+input[type=submit] {
+  border-radius: 50%;
+  font-size: 18px;
+  padding: 0;
+}
 
 .icon-small,
 input[type=submit] {
-  font-size: 250%;
+  font-size: 200%;
+  text-align: center;
+  margin: 10px;
 }
 
 .icon-small:disabled {

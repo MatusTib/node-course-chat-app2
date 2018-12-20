@@ -19,13 +19,18 @@
       <ol id="messages" class="chat__messages"></ol>
 
       <div class="chat__footer">
-        <form id="message-form">
+        <form class="message-form" id="message-form">
           <input id="inputmsg" type="text" placeholder="Type your message here..." autofocus autocomplete="off"/>
-          <button>Send</button>
+          <button><i class="ion-android-send icon-small"></i></button>
+          <!-- <button>Send</button> -->
         </form>
-        <button id="send-location"><i class="ion-ios-location icon-small"></i></button>
-        <input type="file" id="image-file" accept="image/*" style="display: none">
-        <button id="image-select"><i class="ion-images icon-small"></i></button>
+        <div class="btn-location">
+          <button id="send-location"><i class="ion-ios-location icon-small"></i></button>
+        </div>
+        <div class="btn-send-image">
+          <input type="file" id="image-file" accept="image/*" style="display: none">
+          <button id="image-select"><i class="ion-images icon-small"></i></button>
+        </div>
       </div>
     </div>
     <div class="" id="imageTest">
