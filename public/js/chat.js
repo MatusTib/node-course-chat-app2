@@ -85,17 +85,14 @@ socket.on('newLocationMessage', function (message) {
       return alert('Geolocation not supported by your browser.');
     }
     locationButton.attr('disabled', 'disabled');
-    // locationButton.attr('disabled', 'disabled').text('Sending location...');
     navigator.geolocation.getCurrentPosition(function(position) {
       locationButton.removeAttr('disabled');
-      // locationButton.removeAttr('disabled').text('Send location');
       socket.emit('createLocationMessage', {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
     },function () {
           locationButton.removeAttr('disabled');
-          // locationButton.removeAttr('disabled').text('Send location');
         alert('Unable to fetch location.');
     });
   });
@@ -124,46 +121,20 @@ socket.on('newLocationMessage', function (message) {
     let imageSelect = $('#image-select');
     let imageFile = $('#image-file');
     imageSelect.on('click', function () { //when user clicks on the image triger the input file
-        // console.log('User clicked!');  //---------TRACE
         imageSelect.attr('disabled', 'disabled');
         imageFile.click();
         let count = 0; //PATCH: to fix problem of duplicate images when user selects an image one after another
         console.log('imageFile:', imageFile);
 
         imageFile.change (function () {
-            // console.log('IMAGE FILE CHANGE!', imageFile.change);//---------TRACE
-            // console.log('COUNT=', count);//---------TRACE
             // console.log('imageFile Val=', imageFile.val());//---------TRACE
             let file = document.querySelector('input[type=file]').files[0];
             if(file && count < 1) {
-                // console.log('Files:', document.querySelector('input[type=file]').files); //---------TRACE
-                // let fileName = file.name;//---------TRACE
-                // let fileType = file.type;//---------TRACE
-                // let fileSize = file.size;//---------TRACE
-            //
-            // console.log('FILE = ', file);//---------TRACE
-            // console.log('FILE NAME = ', fileName);//---------TRACE
-            // console.log('FILE TYPE = ', fileType);//---------TRACE
-            // console.log('FILE SIZE = ', fileSize);//---------TRACE
-            // let reader = new FileReader();
-
-            // if (file) {
-            //   reader.readAsDataURL(file);
-            //   console.log('File read!');//---------TRACE
-            //
-            // }
-            // console.log('Selected fileName:', fileName);//---------TRACE
-            // console.log('Selected file:', file);//---------TRACE
-            //
                 let messageTextbox = $('#inputmsg');
                 socket.emit('createImageMessage', {
                   img: file,
                 }, function () {
-                        // console.log('in File read createImageMessage');
-                        // console.log('in File read createImageMessage, FILE 1= ',file);
                         messageTextbox.val('');
-                        // file = null;
-                        // console.log('in File read createImageMessage, FILE 2= ',file);
                 });
 
                 count = count + 1; //To prevent duplicate image messages. Count number of loops.

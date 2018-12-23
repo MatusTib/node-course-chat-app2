@@ -35,7 +35,7 @@ h3 {
 button {
   background: #265f82;
   cursor: pointer;
-  transition: background .3s ease;
+  transition: background .4s ease;
 }
 
 button:hover {
@@ -46,38 +46,25 @@ button:disabled {
   cursor: default;
   background: #698ea5
 }
-.btn-join button,
-input[type=submit] {
-  border-radius: 30px;
-}
-.btn-location {
-  font-size: 10px;
-  margin-right: 10px;
-}
 
 .message-form button,
 input[type=submit] {
   border-radius: 50%;
-  font-size: 18px;
+  font-size: 1.5em;
   padding: 0;
 }
+.message-form button:hover {
+  background: #5c6c77
+}
 
-.btn-location button,
+ .btn-location,
 input[type=submit]  {
-  border-radius: 50%;
-  font-size: 18px;
-  padding: 0;
-}
-.btn-send-image button,
-input[type=submit] {
-  border-radius: 50%;
-  font-size: 18px;
-  padding: 0;
-}
+  margin-right: 10px;
 
+}
 .icon-small,
 input[type=submit] {
-  font-size: 200%;
+  font-size: 150%;
   text-align: center;
   margin: 10px;
 }
@@ -238,5 +225,7 @@ input[type=submit] {
 
   .chat__footer button {
     margin-right: 0
+    font-size: 80%;
+
   }
 }
