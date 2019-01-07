@@ -125,20 +125,16 @@ socket.on('newLocationMessage', function (message) {
         imageFile.click();
         let count = 0; //PATCH: to fix problem of duplicate images when user selects an image one after another
         console.log('imageFile:', imageFile);
-
         imageFile.change (function () {
-            // console.log('imageFile Val=', imageFile.val());//---------TRACE
             let file = document.querySelector('input[type=file]').files[0];
             if(file && count < 1) {
                 let messageTextbox = $('#inputmsg');
                 socket.emit('createImageMessage', {
                   img: file,
                 }, function () {
-                        messageTextbox.val('');
+                        imageSelect.removeAttr('disabled');
                 });
-
                 count = count + 1; //To prevent duplicate image messages. Count number of loops.
               }
         });
-        imageSelect.removeAttr('disabled');
     });

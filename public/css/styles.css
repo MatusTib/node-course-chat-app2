@@ -231,6 +231,12 @@ input[type=submit] {
 }
 
 @media (max-width:600px) {
+  button:active {
+    transform: translate(2px,2px);
+    -webkit-transition: background .4s ease;
+    transition: .4s ease;
+  }
+
   * {
     font-size: 1rem
   }
