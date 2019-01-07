@@ -85,7 +85,6 @@ io.on('connection', (socket) => {
   //createImageMessage
   socket.on('createImageMessage', (message, callback) => { //Listener
     let user  = users.getUser(socket.id);
-    // console.log('message.img:', message.img);//---------TRACE
     if(user) {
       io.to(user[0].room).emit('newImageMessage', generateImageMessage(user[0].name, message.img));
     }
