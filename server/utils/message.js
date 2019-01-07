@@ -18,9 +18,6 @@ var generateLocationMessage = (from,latitude,longitude) => {
 
 //generateImageMessage
 var generateImageMessage = (from, img) => {
-  // console.log('In generateImageMessage img:', img);//---------TRACE
-  // const buf = Buffer.from(img, 'binary');
-  // console.log('In generateImageMessage Buffer:', buf);//---------TRACE
   return {
     from,
     img,

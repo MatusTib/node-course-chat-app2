@@ -92,9 +92,13 @@ describe('Users', () => {
   it('should detect duplicate username', () => {
     var dupUser = 'Florence';
     var uniqUser = 'Oprah';
+    var room1 = 'React Course';
+    var room2 = 'Node Course';
 
-    var result = users.isDuplicate(dupUser);
+    var result = users.isDuplicate(dupUser,room1);
     expect(result).toBeTruthy();
+    result = users.isDuplicate(dupUser,room2);
+    expect(result).toBeFalsy();
     result = users.isDuplicate(uniqUser);
     expect(result).toBeFalsy();
   })

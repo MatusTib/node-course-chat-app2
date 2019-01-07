@@ -32,14 +32,23 @@ h3 {
   text-align: center;
   font-size: 1.5rem
 }
+
 button {
   background: #265f82;
+  outline: none;
   cursor: pointer;
+  -webkit-transition: background .4s ease;
   transition: background .4s ease;
 }
 
 button:hover {
   background: #1F4C69
+}
+
+button:active {
+  transform: translate(2px,2px);
+  -webkit-transition: background .4s ease;
+  transition: .4s ease;
 }
 
 button:disabled {
@@ -52,16 +61,31 @@ input[type=submit] {
   border-radius: 50%;
   font-size: 1.5em;
   padding: 0;
-}
-.message-form button:hover {
-  background: #5c6c77
+  outline: none;
+  -webkit-transition: background .4s ease;
+  transition: background .4s ease;
 }
 
- .btn-location,
+.message-form button:hover,
+input[type=submit]:hover {
+  background: #1F4C69;
+}
+
+.message-form button:active,
+input[type=submit]:active {
+  background: #1F4C69;
+  transform: translate(2px,2px);
+  -webkit-transition: background .4s ease;
+  transition: .4s ease;
+
+}
+
+.btn-location,
 input[type=submit]  {
   margin-right: 10px;
 
 }
+
 .icon-small,
 input[type=submit] {
   font-size: 150%;
