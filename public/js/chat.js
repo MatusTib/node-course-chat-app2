@@ -98,7 +98,6 @@ socket.on('newLocationMessage', function (message) {
   });
 
   socket.on('newImageMessage', function (message) {
-      console.log('newImageMessage, img=', message.img);
       let formattedTime = moment(message.createdAt).format('h:mm a');
       let template = $('#image-message-template').html();
       let ba = new Uint8Array(message.img);
@@ -124,7 +123,7 @@ socket.on('newLocationMessage', function (message) {
         imageSelect.attr('disabled', 'disabled');
         imageFile.click();
         let count = 0; //PATCH: to fix problem of duplicate images when user selects an image one after another
-        console.log('imageFile:', imageFile);
+
         imageFile.change (function () {
             let file = document.querySelector('input[type=file]').files[0];
             if(file && count < 1) {
@@ -135,6 +134,8 @@ socket.on('newLocationMessage', function (message) {
                         imageSelect.removeAttr('disabled');
                 });
                 count = count + 1; //To prevent duplicate image messages. Count number of loops.
+              } else {  //User clicked on "Cancel" button of file dialog.
+                imageSelect.removeAttr('disabled');
               }
         });
     });
