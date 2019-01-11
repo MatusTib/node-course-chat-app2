@@ -134,6 +134,7 @@ socket.on('newLocationMessage', function (message) {
                         imageSelect.removeAttr('disabled');
                 });
                 count = count + 1; //To prevent duplicate image messages. Count number of loops.
+                imageSelect.removeAttr('disabled');
               } else {  //User clicked on "Cancel" button of file dialog.
                 imageSelect.removeAttr('disabled');
               }
