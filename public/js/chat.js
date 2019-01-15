@@ -123,7 +123,6 @@ socket.on('newLocationMessage', function (message) {
         imageSelect.attr('disabled', 'disabled');
         imageFile.click();
         let count = 0; //PATCH: to fix problem of duplicate images when user selects an image one after another
-
         imageFile.change (function () {
             let file = document.querySelector('input[type=file]').files[0];
             if(file && count < 1) {
@@ -134,9 +133,10 @@ socket.on('newLocationMessage', function (message) {
                         imageSelect.removeAttr('disabled');
                 });
                 count = count + 1; //To prevent duplicate image messages. Count number of loops.
-                imageSelect.removeAttr('disabled');
               } else {  //User clicked on "Cancel" button of file dialog.
                 imageSelect.removeAttr('disabled');
               }
         });
+        imageSelect.removeAttr('disabled');
+
     });
