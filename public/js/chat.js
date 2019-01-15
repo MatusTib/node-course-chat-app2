@@ -36,9 +36,16 @@ socket.on('disconnect', function () {
 });
 socket.on('updateUserList', function (users, room) {
   let ol = $('<ol></ol>');
-users.forEach(function (users) {
-    ol.append($('<li></li>').text(users));
-  });
+  let params = $.deparam(window.location.search);
+
+    users.forEach(function (users) {
+      if (users === params.name.toLowerCase()) {  //Highlight the current user in room
+          ol.append($('<li class="chat__boldUser"></li>').text(users));
+        } else {
+          ol.append($('<li></li>').text(users));
+        }
+      });
+
   $('#users').html(ol);
 });
 

@@ -213,6 +213,9 @@ input[type=submit] {
   flex-grow: 1
 }
 
+.chat__boldUser {
+  font-weight: bold;
+}
 .message {
   padding: 10px
 }
